@@ -23,8 +23,8 @@ jobs:
           # 64-bit target
           - target: x86_64-unknown-linux-gnu
     steps:
-      - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+      - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
       - run: rustup target add ${{ matrix.target }}
       - run: ${{ matrix.deps }}
       - run: cargo test --target ${{ matrix.target }} --no-default-features
@@ -46,8 +46,8 @@ jobs:
     name: Build on no_std target (thumbv7em-none-eabi)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@master
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+      - uses: dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067 # master
         with:
           toolchain: stable
           targets: thumbv7em-none-eabi
@@ -59,8 +59,8 @@ jobs:
     name: Build simd backend (nightly)
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: dtolnay/rust-toolchain@nightly
+    - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+    - uses: dtolnay/rust-toolchain@0e28dd9a7764e5f83064112bb1f24025a14c313c # nightly
     # Build with AVX2 features, then with AVX512 features
     - env:
         RUSTFLAGS: '--cfg curve25519_dalek_backend="simd" -C target_feature=+avx2'
@@ -73,8 +73,8 @@ jobs:
     name: Build docs
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: dtolnay/rust-toolchain@nightly
+    - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+    - uses: dtolnay/rust-toolchain@0e28dd9a7764e5f83064112bb1f24025a14c313c # nightly
     - run: make doc
     - run: make doc-internal
 
@@ -96,29 +96,29 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - run: ${{ matrix.deps }}
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067 # master
         with:
           toolchain: ${{ matrix.rust }}
           targets: ${{ matrix.target }}
-      - uses: RustCrypto/actions/cross-install@master
+      - uses: RustCrypto/actions/cross-install@efc9b5d1c965d13258baa76a080e85a7c495c658 # master
       - run: cross test --release --target ${{ matrix.target }}
 
   nightly:
     name: Test nightly compiler
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: dtolnay/rust-toolchain@nightly
+    - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+    - uses: dtolnay/rust-toolchain@0e28dd9a7764e5f83064112bb1f24025a14c313c # nightly
     - run: cargo test
 
   clippy:
     name: Check that clippy is happy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: dtolnay/rust-toolchain@nightly
+    - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+    - uses: dtolnay/rust-toolchain@0e28dd9a7764e5f83064112bb1f24025a14c313c # nightly
       with:
         components: clippy
     - env:
@@ -132,8 +132,8 @@ jobs:
     name: Check formatting
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: dtolnay/rust-toolchain@stable
+    - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+    - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
       with:
         components: rustfmt
     - run: cargo fmt --all -- --check
@@ -142,10 +142,10 @@ jobs:
     name: Current MSRV is 1.60.0
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
     # First run `cargo +nightly -Z minimal-verisons check` in order to get a
     # Cargo.lock with the oldest possible deps
-    - uses: dtolnay/rust-toolchain@nightly
+    - uses: dtolnay/rust-toolchain@0e28dd9a7764e5f83064112bb1f24025a14c313c # nightly
     - run: cargo -Z minimal-versions check --no-default-features --features serde
     # Now check that `cargo build` works with respect to the oldest possible
     # deps and the stated MSRV
@@ -156,8 +156,8 @@ jobs:
     name: Check that benchmarks compile
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: dtolnay/rust-toolchain@stable
+    - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+    - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
     - name: Build u32 bench
       env:
         RUSTFLAGS: '--cfg curve25519_dalek_bits="32"'
